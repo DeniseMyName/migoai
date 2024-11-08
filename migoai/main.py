@@ -67,11 +67,11 @@ def parse_args() -> Tuple[Optional[str], bool, Optional[str], bool, Optional[str
     set_default_modal = False
     view_history = False
     view_modals = False
+    activatevoice = False
 
     if "--activatevoice" in args:
         start_voice_listener()
-        print(f"\n{Fore.GREEN}Voice command for migo activated{Style.RESET_ALL}")
-        return
+        activatevoice = True
 
     i = 0
     while i < len(args):
@@ -101,7 +101,7 @@ def parse_args() -> Tuple[Optional[str], bool, Optional[str], bool, Optional[str
         else:
             i += 1
             
-    return character, set_default, modal, set_default_modal, chat_name, view_history, view_modals
+    return character, set_default, modal, set_default_modal, chat_name, view_history, view_modals, activatevoice
 
 def get_token():
     headers = {
@@ -145,13 +145,17 @@ def clear_screen():
 
 def chat_with_migoai():
     clear_screen()
-    character, set_default, modal, set_default_modal, chat_name, view_history, view_modals = parse_args()
+    character, set_default, modal, set_default_modal, chat_name, view_history, view_modals, activatevoice = parse_args()
     config = load_config()
     spinner = Spinner()
     history_manager = ChatHistoryManager()
 
     if (view_history or view_modals) and (set_default or set_default_modal or character or modal):
         print(f"{Fore.RED}Error: {Style.RESET_ALL}You cannot use view commands like --viewchats or --viewmodals with other commands that set values.")
+        return
+    
+    if activatevoice:
+        print(f"\n{Fore.GREEN}Voice command for migo activated{Style.RESET_ALL}")
         return
     
     if view_history:
