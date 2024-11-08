@@ -137,7 +137,14 @@ def save_and_exit(history_manager, history, chat_name=None):
     print(f"\n{Fore.YELLOW}Chat saved and exiting...{Style.RESET_ALL}")
     sys.exit(0)
 
+def clear_screen():
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
+
 def chat_with_migoai():
+    clear_screen()
     character, set_default, modal, set_default_modal, chat_name, view_history, view_modals = parse_args()
     config = load_config()
     spinner = Spinner()
