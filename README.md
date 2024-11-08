@@ -35,6 +35,7 @@ migoai
 - `--character <character_name>`: Set a specific character for the AI.
 - `--defaultcharacter <character_name>`: Set a default character for all interactions.
 - `--modal <modal_name>`: Specify the modal for the AI to operate in.
+- `--viewmodals`: View all available modals.
 - `--defaultmodal <modal_name>`: Set the default modal for all interactions.
 - `--chat <chat_name>`: Specify a name for the chat history.
 - `--viewchats`: View all available chat histories.
