@@ -134,7 +134,7 @@ def save_and_exit(history_manager, history, chat_name=None):
         history_manager.save_history(history, chat_name)
     else:
         history_manager.save_history(history)
-    print(f"\n{Fore.YELLOW}Chat saved and exiting...{Style.RESET_ALL}")
+    print(f"\n{Fore.YELLOW}Chat saved{Style.RESET_ALL}")
     sys.exit(0)
 
 def clear_screen():
