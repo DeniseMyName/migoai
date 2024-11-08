@@ -5,6 +5,7 @@ import time
 import threading
 import textwrap
 import requests
+import signal  # Import the signal module
 from colorama import init, Fore, Style
 from typing import Tuple, Optional
 from .config import load_config, save_config, AVAILABLE_MODELS, MAX_WIDTH, TOKEN_DATA, TOEKN
@@ -44,7 +45,7 @@ def wrap_text(text, width=MAX_WIDTH):
     return '\n'.join(textwrap.wrap(text, width=width, replace_whitespace=False))
 
 def clean_text(text):
-    """Clean and normalize text to handle special characters."""
+    """Clean and normalize text to handle special characters.""" 
     return text.encode('utf-8').decode('utf-8', 'replace')
 
 def parse_args() -> Tuple[Optional[str], bool, Optional[str], bool, Optional[str], bool, bool]:
@@ -113,12 +114,21 @@ def get_token():
     )
     return response.json().get("token")
 
+def save_and_exit(history_manager, history, chat_name=None):
+    """Function to save history and exit gracefully."""
+    if chat_name:
+        history_manager.save_history(history, chat_name)
+    else:
+        history_manager.save_history(history)
+    print(f"\n{Fore.YELLOW}Chat saved and exiting...{Style.RESET_ALL}")
+    sys.exit(0)
+
 def chat_with_migoai():
     character, set_default, modal, set_default_modal, chat_name, view_history, view_modals = parse_args()
     config = load_config()
     spinner = Spinner()
     history_manager = ChatHistoryManager()
-    
+
     if (view_history or view_modals) and (set_default or set_default_modal or character or modal):
         print(f"{Fore.RED}Error: {Style.RESET_ALL}You cannot use view commands like --viewchats or --viewmodals with other commands that set values.")
         return
@@ -186,6 +196,13 @@ def chat_with_migoai():
 
     history = history_manager.load_history(chat_name)
     
+    def signal_handler(signal, frame):
+        """Handle Ctrl + C signal."""
+        print(f"\n{Fore.RED}Detected Ctrl + C! Saving and exiting...{Style.RESET_ALL}")
+        save_and_exit(history_manager, history, chat_name)
+
+    signal.signal(signal.SIGINT, signal_handler)
+
     if chat_name:
         print(f"{Fore.CYAN}Loaded chat history: {chat_name}{Style.RESET_ALL}")
     
