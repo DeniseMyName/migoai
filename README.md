@@ -7,11 +7,11 @@ Migo AI is a terminal-based Python application designed to interact with AI mode
 
 ## Features
 
-- **Interactive AI**: Communicate with the AI through the terminal.
-- **History Management**: View, load, and save chat histories.
-- **Character & Modal Settings**: Customize the AI's behavior using characters and models.
-- **Spinning Loader**: Indicates when the AI is processing a request.
-- **Text Wrapping**: Automatically wraps long text to a specified width.
+- Interactive AI: Communicate with the AI through the terminal.
+- History Management: View, load, and save chat histories.
+- Character & Modal Settings: Customize the AI's behavior using characters and models.
+- Spinning Loader: Indicates when the AI is processing a request.
+- Text Wrapping: Automatically wraps long text to a specified width.
 
 ## Installation
 
