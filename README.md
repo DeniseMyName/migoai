@@ -45,7 +45,8 @@ migoai
 
 ```bash
 migoai --viewmodals
-migoai --character "Assistant" --modal "helpful"
+migoai --character "Be straight foward and talk less"
+migoai --modal "FlowGPT-Ares"
 ```
 
 This will start a conversation with the AI using the "Assistant" character and the "helpful" modal.
