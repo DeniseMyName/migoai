@@ -2,7 +2,7 @@ Metadata-Version: 2.1
 Name: migoai
 Version: 0.1
 Summary: A simple AI chat interface
-Home-page: https://github.com/yourusername/migoai
+Home-page: https://github.com/DeniseMyName/migoai
 Author: Your Name
 Author-email: your_email@example.com
 Classifier: Programming Language :: Python :: 3
@@ -11,6 +11,8 @@ Classifier: Operating System :: OS Independent
 Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: requests
+Requires-Dist: SpeechRecognition
+Requires-Dist: pyttsx3
 
 Here's the updated `README.md` to reflect your latest code changes:
 

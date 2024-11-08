@@ -10,8 +10,17 @@ from colorama import init, Fore, Style
 from typing import Tuple, Optional
 from .config import load_config, save_config, AVAILABLE_MODELS, MAX_WIDTH, TOKEN_DATA, TOEKN
 from .chat_history import ChatHistoryManager
+import subprocess
 
 init()
+
+def start_voice_listener():
+    subprocess.Popen(
+        ["pythonw", "migoai/voice_listener.pyw"],
+        creationflags=subprocess.CREATE_NEW_CONSOLE,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL
+    )
 
 class Spinner:
     def __init__(self):
@@ -58,7 +67,12 @@ def parse_args() -> Tuple[Optional[str], bool, Optional[str], bool, Optional[str
     set_default_modal = False
     view_history = False
     view_modals = False
-    
+
+    if "--activatevoice" in args:
+        start_voice_listener()
+        print(f"\n{Fore.GREEN}Voice command for migo activated{Style.RESET_ALL}")
+        return
+
     i = 0
     while i < len(args):
         if args[i] == "--character":
