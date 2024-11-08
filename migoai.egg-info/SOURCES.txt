@@ -5,6 +5,7 @@ migoai/__init__.py
 migoai/chat_history.py
 migoai/config.py
 migoai/main.py
+migoai/voice_listener.py
 migoai.egg-info/PKG-INFO
 migoai.egg-info/SOURCES.txt
 migoai.egg-info/dependency_links.txt

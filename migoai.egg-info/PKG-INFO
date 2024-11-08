@@ -23,11 +23,11 @@ Migo AI is a terminal-based Python application designed to interact with AI mode
 
 ## Features
 
-- **Interactive AI**: Communicate with the AI through the terminal.
-- **History Management**: View, load, and save chat histories.
-- **Character & Modal Settings**: Customize the AI's behavior using characters and models.
-- **Spinning Loader**: Indicates when the AI is processing a request.
-- **Text Wrapping**: Automatically wraps long text to a specified width.
+- Interactive AI: Communicate with the AI through the terminal.
+- History Management: View, load, and save chat histories.
+- Character & Modal Settings: Customize the AI's behavior using characters and models.
+- Spinning Loader: Indicates when the AI is processing a request.
+- Text Wrapping: Automatically wraps long text to a specified width.
 
 ## Installation
 
@@ -55,12 +55,15 @@ migoai
 - `--defaultmodal <modal_name>`: Set the default modal for all interactions.
 - `--chat <chat_name>`: Specify a name for the chat history.
 - `--viewchats`: View all available chat histories.
+- `--startvoice`: start voice command for migo. You can say "Hey Migo" or "Migo" to start migo.
+- `--stopvoice`: stop voice command for migo.
 
 ### Example:
 
 ```bash
 migoai --viewmodals
-migoai --character "Assistant" --modal "helpful"
+migoai --character "Be straight foward and talk less"
+migoai --modal "FlowGPT-Ares"
 ```
 
 This will start a conversation with the AI using the "Assistant" character and the "helpful" modal.

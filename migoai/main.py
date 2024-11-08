@@ -5,22 +5,16 @@ import time
 import threading
 import textwrap
 import requests
-import signal  # Import the signal module
+import signal 
 from colorama import init, Fore, Style
 from typing import Tuple, Optional
 from .config import load_config, save_config, AVAILABLE_MODELS, MAX_WIDTH, TOKEN_DATA, TOEKN
 from .chat_history import ChatHistoryManager
-import subprocess
+from .voice_listener import start_voice_listener, stop_voice_listener
+
+import os
 
 init()
-
-def start_voice_listener():
-    subprocess.Popen(
-        ["pythonw", "migoai/voice_listener.pyw"],
-        creationflags=subprocess.CREATE_NEW_CONSOLE,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL
-    )
 
 class Spinner:
     def __init__(self):
@@ -67,11 +61,15 @@ def parse_args() -> Tuple[Optional[str], bool, Optional[str], bool, Optional[str
     set_default_modal = False
     view_history = False
     view_modals = False
-    activatevoice = False
+    startvoice = False
+    stopvoice = False
 
-    if "--activatevoice" in args:
+    if "--startvoice" in args:
         start_voice_listener()
-        activatevoice = True
+        startvoice = True
+    elif "--stopvoice" in args:
+        stop_voice_listener()
+        stopvoice = True
 
     i = 0
     while i < len(args):
@@ -101,7 +99,7 @@ def parse_args() -> Tuple[Optional[str], bool, Optional[str], bool, Optional[str
         else:
             i += 1
             
-    return character, set_default, modal, set_default_modal, chat_name, view_history, view_modals, activatevoice
+    return character, set_default, modal, set_default_modal, chat_name, view_history, view_modals, startvoice, stopvoice
 
 def get_token():
     headers = {
@@ -145,7 +143,7 @@ def clear_screen():
 
 def chat_with_migoai():
     clear_screen()
-    character, set_default, modal, set_default_modal, chat_name, view_history, view_modals, activatevoice = parse_args()
+    character, set_default, modal, set_default_modal, chat_name, view_history, view_modals, startvoice, stopvoice = parse_args()
     config = load_config()
     spinner = Spinner()
     history_manager = ChatHistoryManager()
@@ -154,8 +152,12 @@ def chat_with_migoai():
         print(f"{Fore.RED}Error: {Style.RESET_ALL}You cannot use view commands like --viewchats or --viewmodals with other commands that set values.")
         return
     
-    if activatevoice:
-        print(f"\n{Fore.GREEN}Voice command for migo activated{Style.RESET_ALL}")
+    if startvoice:
+        print(f"\n{Fore.GREEN}Voice command for migo started{Style.RESET_ALL}")
+        return
+
+    if stopvoice:
+        print(f"\n{Fore.GREEN}Voice command for migo stopped{Style.RESET_ALL}")
         return
     
     if view_history:

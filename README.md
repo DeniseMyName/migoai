@@ -39,7 +39,8 @@ migoai
 - `--defaultmodal <modal_name>`: Set the default modal for all interactions.
 - `--chat <chat_name>`: Specify a name for the chat history.
 - `--viewchats`: View all available chat histories.
-- `--activatevoice`: Activate voice command for migo. You can say "Hey Migo" or "Migo" to start migo.
+- `--startvoice`: start voice command for migo. You can say "Hey Migo" or "Migo" to start migo.
+- `--stopvoice`: stop voice command for migo.
 
 ### Example:
 
