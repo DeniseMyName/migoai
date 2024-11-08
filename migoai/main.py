@@ -68,8 +68,10 @@ def parse_args() -> Tuple[Optional[str], bool, Optional[str], bool, Optional[str
         start_voice_listener()
         startvoice = True
     elif "--stopvoice" in args:
-        stop_voice_listener()
-        stopvoice = True
+        if not stop_voice_listener():
+            print(f"{Fore.RED}Voice command failed to stop:{Style.RESET_ALL}")
+        else:
+            stopvoice = True
 
     i = 0
     while i < len(args):
