@@ -19,7 +19,7 @@ To use Migo AI, follow these steps:
 
 1. Clone this repository:
    ```bash
-      pip install git+https://github.com/yourusername/migoai.git
+      pip install git+https://github.com/DeniseMyName/migoai.git
    ```
 
 ## Usage
