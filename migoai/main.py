@@ -11,8 +11,8 @@ from typing import Tuple, Optional
 from .config import load_config, save_config, AVAILABLE_MODELS, MAX_WIDTH, TOKEN_DATA, TOEKN
 from .chat_history import ChatHistoryManager
 from .voice_listener import start_voice_listener, stop_voice_listener
-
 import os
+import re
 
 init()
 
@@ -143,6 +143,29 @@ def clear_screen():
     else:
         os.system('clear')
 
+def execute_action_based_on_ai_response(response):
+    filename_match = re.search(r"Filename:\s*(.+)", response)
+
+    if filename_match:
+        filename = filename_match.group(1).strip()
+
+        if filename:
+            code_blocks = re.findall(r'```.*?\n(.*?)```', response, re.DOTALL)
+
+        if code_blocks:
+            code_content = code_blocks[0].strip()
+
+            dir_path = os.path.dirname(filename)
+            if dir_path:
+                os.makedirs(dir_path, exist_ok=True)
+
+            with open(filename, 'w') as file:
+                file.write(code_content)
+
+            return True
+    
+    return False
+
 def chat_with_migoai():
     clear_screen()
     character, set_default, modal, set_default_modal, chat_name, view_history, view_modals, startvoice, stopvoice = parse_args()
@@ -256,7 +279,7 @@ def chat_with_migoai():
             'nsfw': False,
             'question': user_input,
             'history': history,
-            'system': system_prompt,
+            'system': f"if a file needs to be create. Example I say, create index.html and code hello world in python, then your response should begin with Filename: index.html and also specify path if asked before you give me your actual response. Another example, Filename: index.html or Filename: website/index.html this is the code for hello world.\n{system_prompt}",
             'promptId': 'kZ4dDpl17xudKnSdr2Wdv',
             'temperature': 0.7,
             'userId': 'lns3JHoPZ9t_TUlUuQfOT',
@@ -289,8 +312,11 @@ def chat_with_migoai():
                 except json.JSONDecodeError:
                     response_text = "Error occurred"
 
+            file_creation = execute_action_based_on_ai_response(response_text)
             wrapped_response = wrap_text(response_text)
             print(f"{Fore.BLUE}Migo AI: {Style.BRIGHT}{wrapped_response}{Style.RESET_ALL}\n")
+            if file_creation is not None and file_creation:
+                print(f"{Fore.BLUE}Migo AI: {Style.BRIGHT}Make Sure to check the created files{Style.RESET_ALL}\n")
 
             history.append({
                 'role': 'user',
@@ -307,4 +333,4 @@ def chat_with_migoai():
                 history_manager.save_history(history)
 
         else:
-            print(f"{Fore.RED}Error: {response.status_code}{Style.RESET_ALL}")
+            print(f"{Fore.RED}Error: {response.text}{Style.RESET_ALL}")
