@@ -14,35 +14,10 @@ from .chat_history import ChatHistoryManager
 from .voice_listener import start_voice_listener, stop_voice_listener
 import os
 import re
+from .aityping import TypingSpinner
 
 init()
 
-class Spinner:
-    def __init__(self):
-        self.spinner_chars = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
-        self.stop_spinner = False
-        self.spinner_thread = None
-
-    def spin(self):
-        while not self.stop_spinner:
-            for char in self.spinner_chars:
-                sys.stdout.write(f"\r{Fore.CYAN}Thinking {char}{Style.RESET_ALL}")
-                sys.stdout.flush()
-                time.sleep(0.1)
-                if self.stop_spinner:
-                    break
-        sys.stdout.write("\r" + " " * 20 + "\r")
-        sys.stdout.flush()
-
-    def start(self):
-        self.stop_spinner = False
-        self.spinner_thread = threading.Thread(target=self.spin)
-        self.spinner_thread.start()
-
-    def stop(self):
-        self.stop_spinner = True
-        if self.spinner_thread:
-            self.spinner_thread.join()
 
 def wrap_text(text, width=MAX_WIDTH):
     """Wrap text to specified width."""
@@ -146,7 +121,7 @@ def chat_with_migoai():
     clear_screen()
     character, set_default, modal, set_default_modal, chat_name, view_history, view_modals, startvoice, stopvoice = parse_args()
     config = load_config()
-    spinner = Spinner()
+    typing = TypingSpinner()
     history_manager = ChatHistoryManager()
 
     if (view_history or view_modals) and (set_default or set_default_modal or character or modal):
@@ -265,7 +240,7 @@ def chat_with_migoai():
         }
 
         print()
-        spinner.start()
+        typing.start()
 
         response = requests.post(
             'https://prod-backend-k8s.flowgpt.com/v3/chat', 
@@ -274,7 +249,7 @@ def chat_with_migoai():
         )
         response.encoding = 'utf-8'
 
-        spinner.stop()
+        typing.stop()
 
         if response.status_code == 200:
             response_text = ''
