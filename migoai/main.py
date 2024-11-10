@@ -8,7 +8,8 @@ import requests
 import signal 
 from colorama import init, Fore, Style
 from typing import Tuple, Optional
-from .config import load_config, save_config, AVAILABLE_MODELS, MAX_WIDTH, TOKEN_DATA, TOEKN
+from .config import load_config, save_config, AVAILABLE_MODELS, MAX_WIDTH, TOEKN
+from .aws_token import get_token
 from .chat_history import ChatHistoryManager
 from .voice_listener import start_voice_listener, stop_voice_listener
 import os
@@ -102,31 +103,6 @@ def parse_args() -> Tuple[Optional[str], bool, Optional[str], bool, Optional[str
             i += 1
             
     return character, set_default, modal, set_default_modal, chat_name, view_history, view_modals, startvoice, stopvoice
-
-def get_token():
-    headers = {
-        'accept': '*/*',
-        'accept-language': 'en-US,en;q=0.9',
-        'cache-control': 'no-cache',
-        'content-type': 'text/plain;charset=UTF-8',
-        'origin': 'https://studio.flowgpt.com',
-        'pragma': 'no-cache',
-        'priority': 'u=1, i',
-        'referer': 'https://studio.flowgpt.com/',
-        'sec-ch-ua': '"Chromium";v="130", "Google Chrome";v="130", "Not?A_Brand";v="99"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"Windows"',
-        'sec-fetch-dest': 'empty',
-        'sec-fetch-mode': 'cors',
-        'sec-fetch-site': 'cross-site',
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
-    }
-    response = requests.post(
-        'https://1816e4d6cd83.ba5a2ce6.us-east-2.token.awswaf.com/1816e4d6cd83/d1d994412487/verify',
-        headers=headers,
-        data=TOKEN_DATA,
-    )
-    return response.json().get("token")
 
 def save_and_exit(history_manager, history, chat_name=None):
     """Function to save history and exit gracefully."""
