@@ -25,8 +25,6 @@ def load_config():
                 return {"default_character": ""}
     return {"default_character": ""}
 
-VERSION = 1.0
-
 def save_config(config):
     """Save configuration to JSON file in user's home directory."""
     ensure_config_dir()
