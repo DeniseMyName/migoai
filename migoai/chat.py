@@ -33,10 +33,10 @@ class ChatWithMigoAI:
         self.history_manager.save_and_exit(self.history, self.chat_name)
     
     def display_initial_info(self):
+        chat_name = "Default Chat"
         if self.chat_name:
-            print(f"{Fore.CYAN}Loaded chat history: {self.chat_name}{Style.RESET_ALL}")
-        else:
-            print(f"{Fore.CYAN}Loaded chat history: Default Chats {Style.RESET_ALL}")
+            chat_name = self.chat_name
+        print(f"{Fore.CYAN}Loaded chat history: {chat_name}{Style.RESET_ALL}")
         print(f"{Fore.CYAN}Chat started! Type 'migoai-exit' to end the conversation.{Style.RESET_ALL}")
         if self.system_prompt:
             print(f"{Fore.YELLOW}Using character: {wrap_text(self.system_prompt)}{Style.RESET_ALL}")
