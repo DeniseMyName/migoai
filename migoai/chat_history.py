@@ -9,9 +9,9 @@ import sys
 class ChatHistoryManager:
     def __init__(self):
         HOME_DIR = str(Path.home())
-        self.history_dir = Path(HOME_DIR) / '.migoai' 
+        self.history_dir = Path(HOME_DIR) / '.migoai' / "histories"
         self.history_dir.mkdir(exist_ok=True)  
-        self.current_history_file = self.history_dir / "default_chat.json"
+        self.current_history_file = self.history_dir / "default.json"
         
     def save_history(self, history: List[Dict], chat_name: Optional[str] = None) -> None:
         """Save chat history to a file."""
@@ -27,7 +27,7 @@ class ChatHistoryManager:
     def load_history(self, chat_name: Optional[str] = None) -> List[Dict]:
         """Load chat history from a file."""
         if chat_name:
-            matching_files = list(self.history_dir.glob(f"{chat_name}_*.json"))
+            matching_files = list(self.history_dir.glob(f"{chat_name}.json"))
             if not matching_files:
                 return []
             filepath = max(matching_files, key=os.path.getctime)
@@ -47,10 +47,9 @@ class ChatHistoryManager:
         """List all available chat histories."""
         histories = []
         for file in self.history_dir.glob("*.json"):
-            if file.name != "config.json":
-                chat_name = file.stem.split('_')[0]
-                if chat_name not in histories:
-                    histories.append(chat_name)
+            chat_name = file.stem
+            if chat_name not in histories:
+                histories.append(chat_name)
         return histories
 
     def save_and_exit(self, history, chat_name=None):

@@ -24,7 +24,7 @@ class ChatWithMigoAI:
         self.system_prompt = self.character or self.config.get("default_character", "")
         self.history = self.history_manager.load_history(self.chat_name)
         signal.signal(signal.SIGINT, self.signal_handler)
-
+        
     def clear_screen(self):
         os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -33,14 +33,43 @@ class ChatWithMigoAI:
         self.history_manager.save_and_exit(self.history, self.chat_name)
     
     def display_initial_info(self):
-        chat_name = "Default Chat"
+        chat_name = "Default"
         if self.chat_name:
             chat_name = self.chat_name
-        print(f"{Fore.CYAN}Chat started! Type 'migoai-exit' to end the conversation.{Style.RESET_ALL}")
-        print(f"{Fore.CYAN}Loaded chat history: {chat_name}{Style.RESET_ALL}")
+        else:
+            histories = self.history_manager.list_chat_histories()
+            if histories:
+                print(f"{Fore.CYAN}Available chat histories:{Style.RESET_ALL}")
+                for idx, hist in enumerate(histories, 1):
+                    print(f"{Fore.GREEN}{idx}. {hist}{Style.RESET_ALL}")
+                
+                while True:
+                    sys.stdout.write(f"{Fore.YELLOW}Select a chat history by number, or press enter to start a new chat:{Style.RESET_ALL} ")
+                    sys.stdout.flush()
+                    user_input = input()
+
+                    if not user_input.strip():
+                        sys.stdout.write("\033[F") 
+                        sys.stdout.write("\033[K")
+                        continue
+                    
+                    try:
+                        if user_input.isdigit() and 1 <= int(user_input) <= len(histories):
+                            chat_name = histories[int(user_input) - 1]
+                            self.history = self.history_manager.load_history(chat_name)
+                            break
+                        else:
+                            print(f"{Fore.RED}Invalid selection. Please enter a valid number or press enter the chat name.{Style.RESET_ALL}")
+                    except:
+                        print(f"{Fore.RED}Invalid selection. Please enter a valid number or press enter the chat name.{Style.RESET_ALL}")
+
+        self.clear_screen()
+        print(f"{Fore.CYAN}Chat started! Type '{Fore.YELLOW}migoai-exit{Fore.CYAN}' or press '{Fore.YELLOW}Ctrl+C{Fore.CYAN}' to end the conversation.{Style.RESET_ALL}")
+        print(f"{Fore.CYAN}Loaded chat history: {Fore.YELLOW}{chat_name}{Style.RESET_ALL}")
         if self.system_prompt:
-            print(f"{Fore.YELLOW}Using character: {wrap_text(self.system_prompt)}{Style.RESET_ALL}")
-        print(f"{Fore.YELLOW}Using model: {self.model}{Style.RESET_ALL}\n")
+            print(f"{Fore.CYAN}Using character: {Fore.YELLOW}{wrap_text(self.system_prompt)}{Style.RESET_ALL}")
+        print(f"{Fore.CYAN}Using model: {Fore.YELLOW}{self.model}{Style.RESET_ALL}\n")
+
         for entry in self.history:
             role = entry['role']
             content = wrap_text(entry['content'])
@@ -58,7 +87,9 @@ class ChatWithMigoAI:
             sys.stdout.flush()
             user_input = input()
 
-            if not user_input:
+            if not user_input.strip():
+                sys.stdout.write("\033[F") 
+                sys.stdout.write("\033[K")
                 continue
 
             print()
