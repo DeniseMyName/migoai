@@ -5,14 +5,14 @@ import threading
 
 class TypingSpinner:
     def __init__(self):
-        self.typing_message = "Typing."
+        self.typing_message = f"{Fore.BLUE}Migo AI: {Style.BRIGHT}Typing."
         self.stop_spinner = False
         self.spinner_thread = None
 
     def spin(self):
         while not self.stop_spinner:
             for i in range(4):
-                sys.stdout.write(f"\r{Fore.CYAN}{self.typing_message}{'.' * i}{Style.RESET_ALL}")
+                sys.stdout.write(f"\r{self.typing_message}{'.' * i}{Style.RESET_ALL}")
                 sys.stdout.flush()
                 time.sleep(0.5)
                 if self.stop_spinner:
