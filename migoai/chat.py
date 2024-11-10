@@ -36,8 +36,8 @@ class ChatWithMigoAI:
         chat_name = "Default Chat"
         if self.chat_name:
             chat_name = self.chat_name
-        print(f"{Fore.CYAN}Loaded chat history: {chat_name}{Style.RESET_ALL}")
         print(f"{Fore.CYAN}Chat started! Type 'migoai-exit' to end the conversation.{Style.RESET_ALL}")
+        print(f"{Fore.CYAN}Loaded chat history: {chat_name}{Style.RESET_ALL}")
         if self.system_prompt:
             print(f"{Fore.YELLOW}Using character: {wrap_text(self.system_prompt)}{Style.RESET_ALL}")
         print(f"{Fore.YELLOW}Using model: {self.model}{Style.RESET_ALL}\n")
