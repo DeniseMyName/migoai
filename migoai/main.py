@@ -214,6 +214,13 @@ def chat_with_migoai():
         print(f"{Fore.YELLOW}Using character: {wrap_text(system_prompt)}{Style.RESET_ALL}")
     print(f"{Fore.YELLOW}Using model: {model}{Style.RESET_ALL}\n")
 
+    for entry in history:
+        role = entry['role']
+        content = wrap_text(entry['content'])
+        if role == "user":
+            print(f"{Fore.GREEN}You: {Style.RESET_ALL}{content}\n")
+        elif role == "assistant":
+            print(f"{Fore.BLUE}Migo AI: {Style.BRIGHT}{content}{Style.RESET_ALL}\n")
     while True:
         user_input = input(f"{Fore.GREEN}You: {Style.RESET_ALL}")
         
