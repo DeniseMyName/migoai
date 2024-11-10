@@ -46,7 +46,7 @@ class ChatHistoryManager:
         histories = []
         for file in self.history_dir.glob("*.json"):
             if file.name != "current_chat.json" and file.name != "config.json":
-                chat_name = file.name.split('_')[0]
+                chat_name = file.stem.split('_')[0]
                 if chat_name not in histories:
                     histories.append(chat_name)
         return histories

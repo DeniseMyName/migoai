@@ -140,8 +140,8 @@ def chat_with_migoai():
         histories = history_manager.list_chat_histories()
         if histories:
             print(f"{Fore.CYAN}Available chat histories:{Style.RESET_ALL}")
-            for hist in histories:
-                print(f"{Fore.GREEN}- {hist}{Style.RESET_ALL}")
+            for idx, hist in enumerate(histories, 1):
+                print(f"{Fore.GREEN}{idx}. {hist}{Style.RESET_ALL}")
         else:
             print(f"{Fore.YELLOW}No saved chat histories found.{Style.RESET_ALL}")
         return
