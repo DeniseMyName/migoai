@@ -16,3 +16,4 @@ def check_update():
             installed_version = 0.0
         if latest_version > installed_version:
             subprocess.run(["pip", "install", "git+https://github.com/DeniseMyName/migoai.git"])
+            subprocess.run(["migoai"])
