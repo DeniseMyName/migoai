@@ -1,4 +1,7 @@
-from .main import chat_with_migoai
+from .chat import ChatWithMigoAI
+from .update import check_update
 
 def start_chat():
-    chat_with_migoai()
+    check_update()
+    chat_app = ChatWithMigoAI()
+    chat_app.run()

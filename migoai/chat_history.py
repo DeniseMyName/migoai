@@ -3,6 +3,8 @@ import json
 from pathlib import Path
 from datetime import datetime
 from typing import List, Dict, Optional
+from colorama import init, Fore, Style
+import sys
 
 class ChatHistoryManager:
     def __init__(self):
@@ -50,3 +52,12 @@ class ChatHistoryManager:
                 if chat_name not in histories:
                     histories.append(chat_name)
         return histories
+
+    def save_and_exit(self, history, chat_name=None):
+        """Function to save history and exit gracefully."""
+        if chat_name:
+            self.save_history(history, chat_name)
+        else:
+            self.save_history(history)
+        print(f"\n{Fore.YELLOW}Chat saved{Style.RESET_ALL}")
+        sys.exit(0)

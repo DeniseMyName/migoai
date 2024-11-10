@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="migoai",
-    version="0.1",
+    version="1.0",
     packages=find_packages(),
     install_requires=[
         'requests',
@@ -14,9 +14,8 @@ setup(
             'migoai=migoai.__init__:start_chat',
         ],
     },
-    author="Your Name",
-    author_email="your_email@example.com",
-    description="A simple AI chat interface",
+    author="Denise",
+    description="An advanced AI chat interface",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     url="https://github.com/DeniseMyName/migoai",
