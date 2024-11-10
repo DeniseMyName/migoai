@@ -11,7 +11,7 @@ class ChatHistoryManager:
         HOME_DIR = str(Path.home())
         self.history_dir = Path(HOME_DIR) / '.migoai' 
         self.history_dir.mkdir(exist_ok=True)  
-        self.current_history_file = self.history_dir / "current_chat.json"
+        self.current_history_file = self.history_dir / "default_chat.json"
         
     def save_history(self, history: List[Dict], chat_name: Optional[str] = None) -> None:
         """Save chat history to a file."""
@@ -47,7 +47,7 @@ class ChatHistoryManager:
         """List all available chat histories."""
         histories = []
         for file in self.history_dir.glob("*.json"):
-            if file.name != "current_chat.json" and file.name != "config.json":
+            if file.name != "config.json":
                 chat_name = file.stem.split('_')[0]
                 if chat_name not in histories:
                     histories.append(chat_name)
